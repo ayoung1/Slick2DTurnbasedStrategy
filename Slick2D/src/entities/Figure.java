@@ -97,6 +97,11 @@ public class Figure implements Entity {
 	
 	public void takeDamage(Figure attacker, int amount){
 		this.health = this.health - amount < 0 ? 0 : this.health - amount;
+		if(!this.isAlive()){
+			this.hasAction = false;
+			this.hasMove = false;
+			this.turnOver = true;
+		}
 	}
 	
 	public void gainEnergy(int value){

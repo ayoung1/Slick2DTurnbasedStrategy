@@ -2,6 +2,9 @@ package screen;
 
 import main.Main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -64,7 +67,7 @@ public class SpellTargetScreen extends TargetScreen {
 
 	@Override
 	public Color getSelectorColor() {
-		return new Color(0,0,0,0.0f);
+		return new Color(0,0,0,0.10f);
 	}
 
 	@Override
@@ -74,7 +77,21 @@ public class SpellTargetScreen extends TargetScreen {
 
 	@Override
 	public void onTargetClick() {
-		
+		List<Figure> list = new ArrayList<>();
+		Figure[] array = null;
+		for(int i = 0; i < this.skillSelection.length; ++i){
+			for(int j = 0; j < this.skillSelection.length; ++j){
+				Node node = this.skillSelection[i][j];
+				if(node.getWeight() <= this.skill.getArea() && super.getBoard().figureAt(node.getX(), node.getY()) instanceof Figure){
+					if(skill.isValidTarget((Figure) super.getBoard().figureAt(node.getX(), node.getY())))
+						list.add((Figure) super.getBoard().figureAt(node.getX(), node.getY()));
+				}
+			}
+		}
+		if(list.size() > 0){
+			array = new Figure[list.size()];
+			skill.onCast(list.toArray(array));
+			Main.removeScreen(this);
+		}
 	}
-
 }

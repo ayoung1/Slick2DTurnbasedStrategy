@@ -8,7 +8,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import skills.Skill;
+import skills.GlobalSkill;
+import skills.TargetSkill;
 import state.Board;
 import entities.Figure;
 
@@ -34,12 +35,22 @@ public class ActionSelectionScreen implements Screen {
 
 			@Override
 			public void onClick() {
-				new SpellTargetScreen(figure, board, new Skill(figure, 5, 1){
+				new GlobalSkill(figure){
 
 					@Override
 					public void onCast(Figure[] targets) {
-						
-					}});
+						super.onCast(targets);
+						for(Figure figure : targets){
+							figure.takeDamage(getCaster(), 25);
+						}
+					}
+
+					@Override
+					public boolean isValidTarget(Figure target) {
+						return target != super.getCaster();
+					}
+					
+				}.onSelect(board);
 			}
 
 			@Override

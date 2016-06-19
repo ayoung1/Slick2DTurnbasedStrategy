@@ -50,6 +50,8 @@ public class MapScreen implements Screen {
 				figure.clickEvent(this.board);
 		}
 		if(this.turnOrder.peek().isTurnOver()){
+			while(!this.turnOrder.peek().isAlive())
+				this.turnOrder.add(this.turnOrder.poll());
 			figure = this.turnOrder.poll();
 			this.turnOrder.remove(0);
 			this.turnOrder.add(figure);

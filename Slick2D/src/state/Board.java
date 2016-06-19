@@ -40,6 +40,8 @@ public class Board extends TiledMap {
 	}
 	
 	public Entity figureAt(int x, int y){
+		if(!this.isInBounds(x, y))
+			return new NullEntity();
 		return this.figures[x][y];
 	}
 	

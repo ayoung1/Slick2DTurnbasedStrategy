@@ -1,6 +1,8 @@
 package skills;
 
 import entities.Figure;
+import screen.SpellTargetScreen;
+import state.Board;
 
 public abstract class Skill {
 	private Figure caster;
@@ -17,7 +19,13 @@ public abstract class Skill {
 	public int getRange(){return this.range;}
 	public int getArea(){return this.area;}
 	
-	public void onSelect(){}
+	public void onSelect(Board board){
+		new SpellTargetScreen(this.caster, board, this);
+	}
 	
-	public abstract void onCast(Figure[] targets);
+	public void onCast(Figure[] targets){
+		this.caster.removeAction();
+	}
+	
+	public abstract boolean isValidTarget(Figure target);
 }

@@ -87,24 +87,27 @@ public abstract class TargetScreen implements Screen{
 
 	@Override
 	public void update(GameContainer gc, int delta) throws SlickException {
-		if(this.nodes == null)
-			this.nodes = nodeMethod();
-		this.time += delta;
-		Main.disableSelectorGraphic();
-		if(this.flicker && this.time > Main.UPDATE_SECOND){
-			this.time -= Main.UPDATE_SECOND;
-			this.render = !this.render;
-		}
-		
-		if(gc.getInput().isMousePressed(0)){
-			int x = Main.getSelection().getAdjustedX(Main.TILE_HEIGHT), y = Main.getSelection().getAdjustedY(Main.TILE_HEIGHT);
-			for(Node[] nodearray : nodes){
-				for(Node node : nodearray){
-					if(node.getX() == x && node.getY() == y && this.renderNode(node))
-						this.onTargetClick();
+		if(this.figure.isAlive()){		
+			if(this.nodes == null)
+				this.nodes = nodeMethod();
+			this.time += delta;
+			Main.disableSelectorGraphic();
+			if(this.flicker && this.time > Main.UPDATE_SECOND){
+				this.time -= Main.UPDATE_SECOND;
+				this.render = !this.render;
+			}
+			
+			if(gc.getInput().isMousePressed(0)){
+				int x = Main.getSelection().getAdjustedX(Main.TILE_HEIGHT), y = Main.getSelection().getAdjustedY(Main.TILE_HEIGHT);
+				for(Node[] nodearray : nodes){
+					for(Node node : nodearray){
+						if(node.getX() == x && node.getY() == y && this.renderNode(node))
+							this.onTargetClick();
+					}
 				}
 			}
-		}
+		}else
+			Main.removeScreen(this);
 	}
 
 	@Override
